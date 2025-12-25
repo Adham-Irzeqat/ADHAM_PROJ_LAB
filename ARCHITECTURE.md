@@ -211,15 +211,6 @@ if (endTime - startTime > 2000) {
 2. **Input Validation**: التحقق من صحة البيانات قبل الحفظ
 3. **Local Storage**: البيانات محلية فقط، لا تنتقل عبر الشبكة
 
-## قابلية التوسع (Scalability)
-
-### إمكانيات التوسع المستقبلية:
-
-1. **Backend Integration**: يمكن استبدال Repository بـ API calls
-2. **Multiple Storage Options**: يمكن إضافة دعم لقواعد البيانات
-3. **User Authentication**: يمكن إضافة نظام مستخدمين
-4. **Real-time Sync**: يمكن إضافة مزامنة فورية
-
 
 ## جودة الكود (Code Quality)
 
