@@ -1,176 +1,207 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Language" content="en">
-    <meta name="language" content="English">
-    <title>Smart Task Organizer</title>
-    <link rel="stylesheet" href="css/style.css">
-    <script>
-        // Force English locale for date pickers - Run immediately
-        (function() {
-            // Override navigator.language temporarily
-            const originalLanguage = navigator.language;
-            Object.defineProperty(navigator, 'language', {
-                get: function() { return 'en-US'; },
-                configurable: true
-            });
-            
-            // Set document language
-            if (document.documentElement) {
-                document.documentElement.setAttribute('lang', 'en');
-                document.documentElement.setAttribute('xml:lang', 'en');
-            }
-            
-            // Force locale for date inputs when DOM is ready
-            function setupDateInputs() {
-                const inputs = document.querySelectorAll('input[type="datetime-local"]');
-                inputs.forEach(input => {
-                    input.setAttribute('lang', 'en');
-                    input.setAttribute('xml:lang', 'en');
-                    input.style.direction = 'ltr';
-                    input.style.textAlign = 'left';
-                });
-            }
-            
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', setupDateInputs);
-            } else {
-                setupDateInputs();
-            }
-        })();
-    </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Task Organizer</title>
+
+  <!-- Your CSS -->
+  <link rel="stylesheet" href="css/style.css" />
+
+  <!-- Flatpickr CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
+
 <body>
-    <div class="container">
-        <header>
-            <div class="header-icon">
-                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M9 5H7C5.89543 5 5 5.89543 5 7V19C5 20.1046 5.89543 21 7 21H17C18.1046 21 19 20.1046 19 19V7C19 5.89543 18.1046 5 17 5H15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V5C15 6.10457 14.1046 7 13 7H11C9.89543 7 9 6.10457 9 5V5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M9 12H15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M9 16H15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </div>
-            <h1>Smart Task Organizer</h1>
-            <p class="subtitle">Manage your tasks efficiently</p>
-        </header>
+  <div class="container">
+    <header>
+      <div class="header-icon">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none"
+          xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M9 5H7C5.89543 5 5 5.89543 5 7V19C5 20.1046 5.89543 21 7 21H17C18.1046 21 19 20.1046 19 19V7C19 5.89543 18.1046 5 17 5H15"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" />
+          <path
+            d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V5C15 6.10457 14.1046 7 13 7H11C9.89543 7 9 6.10457 9 5V5Z"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" />
+          <path d="M9 12H15" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M9 16H15" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </div>
 
-        <!-- Form Section -->
-        <section class="task-form-section">
-            <h2 id="form-title">Add New Task</h2>
-            <form id="task-form">
-                <div class="form-group">
-                    <label for="task-title">Title </label>
-                    <input type="text" id="task-title" required placeholder="Enter task title">
-                </div>
-                
-                <div class="form-group">
-                    <label for="task-description">Description</label>
-                    <textarea id="task-description" rows="3" placeholder="Enter task description"></textarea>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="task-deadline">Deadline</label>
-                        <input type="datetime-local" id="task-deadline" placeholder="Select date and time" lang="en" locale="en-US">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="task-priority">Priority</label>
-                        <select id="task-priority">
-                            <option value="Low">Low</option>
-                            <option value="Medium" selected>Medium</option>
-                            <option value="High">High</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="form-actions">
-                    <button type="submit" id="submit-btn" class="btn btn-primary">Add Task</button>
-                    <button type="button" id="cancel-btn" class="btn btn-secondary" style="display: none;">Cancel</button>
-                </div>
-            </form>
-        </section>
+      <h1>Smart Task Organizer</h1>
+      <p class="subtitle">Manage your tasks efficiently</p>
+    </header>
 
-        <!-- Controls Section -->
-        <section class="controls-section">
-            <div class="controls-row">
-                <div class="filter-group">
-                    <label for="filter-select">Filter:</label>
-                    <select id="filter-select">
-                        <option value="all">All Tasks</option>
-                        <option value="completed">Completed</option>
-                        <option value="not-completed">Not Completed</option>
-                        <option value="high-priority">High Priority</option>
-                    </select>
-                </div>
-                
-                <div class="sort-group">
-                    <label for="sort-select">Sort:</label>
-                    <select id="sort-select">
-                        <option value="none">No Sort</option>
-                        <option value="deadline">By Deadline</option>
-                        <option value="priority">By Priority</option>
-                    </select>
-                </div>
-                
-                <button id="export-btn" class="btn btn-export">📥 Export Tasks</button>
-            </div>
-        </section>
+    <section class="task-form-section">
+      <h2 id="form-title">Add New Task</h2>
 
-        <!-- Tasks List Section -->
-        <section class="tasks-section">
-            <h2>Task List (<span id="tasks-count">0</span>)</h2>
-            <div id="tasks-container" class="tasks-container">
-                <p class="empty-message">No tasks yet. Add a new task to get started!</p>
-            </div>
-        </section>
-    </div>
-
-    <!-- Edit Modal -->
-    <div id="edit-modal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Edit Task</h2>
-            <form id="edit-form">
-                <input type="hidden" id="edit-task-id">
-                <div class="form-group">
-                    <label for="edit-title">Title *</label>
-                    <input type="text" id="edit-title" required>
-                </div>
-                <div class="form-group">
-                    <label for="edit-description">Description</label>
-                    <textarea id="edit-description" rows="3"></textarea>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="edit-deadline">Deadline</label>
-                        <input type="datetime-local" id="edit-deadline" placeholder="Select date and time" lang="en" locale="en-US">
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-priority">Priority</label>
-                        <select id="edit-priority">
-                            <option value="Low">Low</option>
-                            <option value="Medium">Medium</option>
-                            <option value="High">High</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
-                    <button type="button" class="btn btn-secondary" id="cancel-edit-btn">Cancel</button>
-                </div>
-            </form>
+      <form id="task-form">
+        <div class="form-group">
+          <label for="task-title">Title</label>
+          <input type="text" id="task-title" required placeholder="Enter task title" />
         </div>
-    </div>
 
-    <script src="js/models/Task.js"></script>
-    <script src="js/repositories/TaskRepository.js"></script>
-    <script src="js/controllers/TaskController.js"></script>
-    <script src="js/views/TaskView.js"></script>
-    <script src="js/app.js"></script>
+        <div class="form-group">
+          <label for="task-description">Description</label>
+          <textarea id="task-description" rows="3" placeholder="Enter task description"></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="task-deadline">Deadline</label>
+
+            <!-- CHANGED: text input + flatpickr -->
+            <input
+              type="text"
+              id="task-deadline"
+              class="deadline-input"
+              placeholder="MM/DD/YYYY HH:mm"
+              autocomplete="off"
+              inputmode="none"
+              lang="en"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="task-priority">Priority</label>
+            <select id="task-priority">
+              <option value="Low">Low</option>
+              <option value="Medium" selected>Medium</option>
+              <option value="High">High</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" id="submit-btn" class="btn btn-primary">Add Task</button>
+          <button type="button" id="cancel-btn" class="btn btn-secondary" style="display: none;">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <section class="controls-section">
+      <div class="controls-row">
+        <div class="filter-group">
+          <label for="filter-select">Filter:</label>
+          <select id="filter-select">
+            <option value="all">All Tasks</option>
+            <option value="completed">Completed</option>
+            <option value="not-completed">Not Completed</option>
+            <option value="high-priority">High Priority</option>
+          </select>
+        </div>
+
+        <div class="sort-group">
+          <label for="sort-select">Sort:</label>
+          <select id="sort-select">
+            <option value="none">No Sort</option>
+            <option value="deadline">By Deadline</option>
+            <option value="priority">By Priority</option>
+          </select>
+        </div>
+
+        <button id="export-btn" class="btn btn-export">📥 Export Tasks</button>
+      </div>
+    </section>
+
+    <section class="tasks-section">
+      <h2>Task List (<span id="tasks-count">0</span>)</h2>
+
+      <div id="tasks-container" class="tasks-container">
+        <p class="empty-message">No tasks yet. Add a new task to get started!</p>
+      </div>
+    </section>
+  </div>
+
+  <div id="edit-modal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+
+      <h2>Edit Task</h2>
+
+      <form id="edit-form">
+        <input type="hidden" id="edit-task-id" />
+
+        <div class="form-group">
+          <label for="edit-title">Title *</label>
+          <input type="text" id="edit-title" required />
+        </div>
+
+        <div class="form-group">
+          <label for="edit-description">Description</label>
+          <textarea id="edit-description" rows="3"></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="edit-deadline">Deadline</label>
+
+            <!-- CHANGED: text input + flatpickr -->
+            <input
+              type="text"
+              id="edit-deadline"
+              class="deadline-input"
+              placeholder="MM/DD/YYYY HH:mm"
+              autocomplete="off"
+              inputmode="none"
+              lang="en"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="edit-priority">Priority</label>
+            <select id="edit-priority">
+              <option value="Low">Low</option>
+              <option value="Medium">Medium</option>
+              <option value="High">High</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+          <button type="button" class="btn btn-secondary" id="cancel-edit-btn">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Flatpickr JS -->
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+  <!-- Your JS (same order you had) -->
+  <script src="js/models/Task.js"></script>
+  <script src="js/factories/TaskFactory.js"></script>
+  <script src="js/repositories/TaskRepository.js"></script>
+  <script src="js/controllers/TaskController.js"></script>
+  <script src="js/views/TaskView.js"></script>
+  <script src="js/app.js"></script>
+
+  <!-- Flatpickr Init (forces English + format) -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const config = {
+        enableTime: true,
+        dateFormat: "m/d/Y H:i",
+        time_24hr: true,
+        locale: "en",
+        allowInput: true
+      };
+
+      if (window.flatpickr) {
+        flatpickr("#task-deadline", config);
+        flatpickr("#edit-deadline", config);
+      }
+    });
+  </script>
 </body>
 </html>
-
